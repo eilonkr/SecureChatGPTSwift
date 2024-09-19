@@ -1,7 +1,7 @@
 import XCTest
-@testable import SecureChatGPTAPI
+@testable import SecureChatGPTSwift
 
-final class SecureChatGPTAPITests: XCTestCase {
+final class SecureChatGPTSwiftTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
