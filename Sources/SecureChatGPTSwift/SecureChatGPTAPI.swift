@@ -10,7 +10,7 @@ import ChatGPTSwift
 import OpenAPIURLSession
 import TrustKit
 
-protocol SecureChatGPTAPIDelegate: AnyObject {
+public protocol SecureChatGPTAPIDelegate: AnyObject {
     func secureChatGPTAPIDidValidatePinningSuccessfully(_ api: SecureChatGPTAPI)
     func secureChatGPTAPI(_ api: SecureChatGPTAPI, didFailToValidatePinningWithError error: PinningValidationError)
     func secureChatGPTAPIPriorityOpenAIPublicKeyHash(_ api: SecureChatGPTAPI) -> String?
