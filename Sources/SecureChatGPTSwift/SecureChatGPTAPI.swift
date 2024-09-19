@@ -25,7 +25,7 @@ public class SecureChatGPTAPI: NSObject {
     private weak var delegate: SecureChatGPTAPIDelegate?
     
     // MARK: - Lifecycle
-    init(pollingSeconds: TimeInterval = 2, delegate: SecureChatGPTAPIDelegate) {
+    public init(pollingSeconds: TimeInterval = 2, delegate: SecureChatGPTAPIDelegate) {
         self.pollingSeconds = pollingSeconds
         self.delegate = delegate
         
@@ -33,7 +33,7 @@ public class SecureChatGPTAPI: NSObject {
     }
     
     // MARK: - Public
-    func getAPI(enforceSSLPinning: Bool = true) async -> ChatGPTAPI {
+    public func getAPI(enforceSSLPinning: Bool = true) async -> ChatGPTAPI {
         if let chatGPTAPI {
             return chatGPTAPI
         }
