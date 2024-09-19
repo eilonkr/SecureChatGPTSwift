@@ -13,9 +13,9 @@ import TrustKit
 public protocol SecureChatGPTAPIDelegate: AnyObject {
     func secureChatGPTAPIDidValidatePinningSuccessfully(_ api: SecureChatGPTAPI)
     func secureChatGPTAPI(_ api: SecureChatGPTAPI, didFailToValidatePinningWithError error: PinningValidationError)
-    func secureChatGPTAPIPriorityOpenAIPublicKeyHash(_ api: SecureChatGPTAPI) -> String?
-    func secureChatGPITAPIPollEncryptedBase64OpenAIAPIToken(_ api: SecureChatGPTAPI) -> String
-    func secureChatGPTAPIEncodedEncrpytionKey(_ api: SecureChatGPTAPI) -> String
+    func secureChatGPTAPIPriorityOpenAIPublicKeyHash(_ api: SecureChatGPTAPI) async -> String?
+    func secureChatGPITAPIEncryptedBase64OpenAIAPIToken(_ api: SecureChatGPTAPI) async -> String
+    func secureChatGPTAPIEncodedEncrpytionKey(_ api: SecureChatGPTAPI) async -> String
 }
 
 public class SecureChatGPTAPI: NSObject {
@@ -40,30 +40,25 @@ public class SecureChatGPTAPI: NSObject {
         
         precondition(delegate != nil, "Delegate cannot be nil")
         
-        let encryptedBase64APIKey = delegate!.secureChatGPITAPIPollEncryptedBase64OpenAIAPIToken(self)
-        guard encryptedBase64APIKey.isEmpty == false else {
-            try? await Task.sleep(for: .seconds(pollingSeconds))
-            return await getAPI(enforceSSLPinning: enforceSSLPinning)
-        }
-        
-        let encodedKey = delegate!.secureChatGPTAPIEncodedEncrpytionKey(self)
+        let encryptedBase64APIKey = await delegate!.secureChatGPITAPIEncryptedBase64OpenAIAPIToken(self)
+        let encodedKey = await delegate!.secureChatGPTAPIEncodedEncrpytionKey(self)
         let decryptedAPIKey = try! encryptedBase64APIKey.decrypt(using: encodedKey)
         let api = ChatGPTAPI(apiKey: decryptedAPIKey, clientTransport: createURLSessionTransport())
         self.chatGPTAPI = api
         
-        configureTrustKit(enforcePinning: enforceSSLPinning)
+        await configureTrustKit(enforcePinning: enforceSSLPinning)
         
         return api
     }
     
     // MARK: - Private
-    private func configureTrustKit(enforcePinning: Bool) {
+    private func configureTrustKit(enforcePinning: Bool) async {
         let trustKitConfig = [
             kTSKPinnedDomains: [
                 "api.openai.com": [
                     kTSKEnforcePinning: enforcePinning,
                     kTSKPublicKeyHashes: [
-                        delegate?.secureChatGPTAPIPriorityOpenAIPublicKeyHash(self),
+                        await delegate?.secureChatGPTAPIPriorityOpenAIPublicKeyHash(self),
                         "FezOCC3qZFzBmD5xRKtDoLgK445Kr0DeJBj2TWVvR9M=",
                         "7z2T5ye+f19+rJoSqmL4lqM2bFirsxLVkLhXlo4mQ0k="
                     ]

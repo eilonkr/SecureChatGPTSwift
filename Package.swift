@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "SecureChatGPTSwift",
-    platforms: [.iOS(.v16)],
+    platforms: [.iOS(.v16), .macOS(.v13)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -26,6 +26,9 @@ let package = Package(
                 .product(name: "ChatGPTSwift", package: "ChatGPTSwift"),
                 .product(name: "TrustKit", package: "TrustKit")
             ]
+        ),
+        .executableTarget(
+            name: "KeyEncryption"
         ),
         .testTarget(
             name: "SecureChatGPTSwiftTests",
