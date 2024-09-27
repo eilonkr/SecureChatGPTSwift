@@ -52,6 +52,7 @@ public class SecureChatGPTAPI: NSObject {
     }
     
     // MARK: - Private
+    // Obtain a public key hash: https://www.ssllabs.com/ssltest/index.html
     private func configureTrustKit(enforcePinning: Bool) async {
         let trustKitConfig = [
             kTSKPinnedDomains: [
@@ -59,8 +60,8 @@ public class SecureChatGPTAPI: NSObject {
                     kTSKEnforcePinning: enforcePinning,
                     kTSKPublicKeyHashes: [
                         await delegate?.secureChatGPTAPIPriorityOpenAIPublicKeyHash(self),
-                        "FezOCC3qZFzBmD5xRKtDoLgK445Kr0DeJBj2TWVvR9M=",
-                        "7z2T5ye+f19+rJoSqmL4lqM2bFirsxLVkLhXlo4mQ0k="
+                        "q75hT9IAbjlW1R15KT3XNu+mzMFmqGZYFNxbjtCibNk=",
+                        "5PUGKpWCEeBFRtFQ3VYzehyEJUcTDsKNw8Xorhi3uHM="
                     ]
                     .compactMap { $0 }
                 ]
