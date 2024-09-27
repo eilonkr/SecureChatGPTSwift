@@ -61,7 +61,7 @@ public class SecureChatGPTAPI: NSObject {
                     kTSKPublicKeyHashes: [
                         await delegate?.secureChatGPTAPIPriorityOpenAIPublicKeyHash(self),
                         "q75hT9IAbjlW1R15KT3XNu+mzMFmqGZYFNxbjtCibNk=",
-                        "5PUGKpWCEeBFRtFQ3VYzehyEJUcTDsKNw8Xorhi3uHM="
+                        "yDu9og255NN5GEf+Bwa9rTrqFQ0EydZ0r1FCh9TdAW4="
                     ]
                     .compactMap { $0 }
                 ]
