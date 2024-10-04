@@ -19,14 +19,12 @@ public protocol SecureChatGPTAPIDelegate: AnyObject {
 }
 
 public class SecureChatGPTAPI: NSObject {
-    private let pollingSeconds: TimeInterval
     private var chatGPTAPI: ChatGPTAPI?
     private var apiKey: String?
     private weak var delegate: SecureChatGPTAPIDelegate?
     
     // MARK: - Lifecycle
-    public init(pollingSeconds: TimeInterval = 2, delegate: SecureChatGPTAPIDelegate) {
-        self.pollingSeconds = pollingSeconds
+    public init(delegate: SecureChatGPTAPIDelegate) {
         self.delegate = delegate
         
         super.init()

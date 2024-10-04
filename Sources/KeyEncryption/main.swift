@@ -23,6 +23,11 @@ do {
     print("==============================")
     print(keyString)
     print("==============================\n")
+    
+    let testResult = try decrypt(encryptedBase64EncodedToken: encryptedKey, encodedKey: keyString)
+    print("Decrpytion test token:")
+    print("==============================\n")
+    print(testResult)
 } catch {
     print("Encryption failed")
 }
@@ -37,7 +42,6 @@ func createEncryption() -> (SymmetricKey, String) {
 }
 
 func encryptAndBase64Encode(apiToken: String, key: SymmetricKey) throws -> String? {
-    let (key, _) = createEncryption()
     let apiTokenData = Data(apiToken.utf8)
     let sealedBox = try AES.GCM.seal(apiTokenData, using: key)
     if let sealedBoxData = sealedBox.combined {
