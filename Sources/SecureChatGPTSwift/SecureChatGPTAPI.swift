@@ -31,7 +31,7 @@ public class SecureChatGPTAPI: NSObject {
     }
     
     // MARK: - Public
-    public func getAPI(enforceSSLPinning: Bool = true) async -> ChatGPTAPI {
+    public func getAPI(useSSLPinning: Bool, enforceSSLPinning: Bool = true) async -> ChatGPTAPI {
         if let chatGPTAPI {
             return chatGPTAPI
         }
@@ -44,7 +44,9 @@ public class SecureChatGPTAPI: NSObject {
         let api = ChatGPTAPI(apiKey: decryptedAPIKey, clientTransport: createURLSessionTransport())
         self.chatGPTAPI = api
         
-        await configureTrustKit(enforcePinning: enforceSSLPinning)
+        if useSSLPinning {
+            await configureTrustKit(enforcePinning: enforceSSLPinning)
+        }
         
         return api
     }
